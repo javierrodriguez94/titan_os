@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_21_194127) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_21_200405) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,6 +23,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_21_194127) do
     t.datetime "updated_at", null: false
     t.integer "year", null: false
     t.index ["season_id", "number"], name: "index_episodes_on_season_id_and_number", unique: true
+  end
+
+  create_table "list_items", force: :cascade do |t|
+    t.bigint "content_id", null: false
+    t.string "content_type", null: false
+    t.datetime "created_at", null: false
+    t.bigint "list_id", null: false
+    t.integer "position", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_type", "content_id"], name: "index_list_items_on_content"
+    t.index ["list_id", "content_type", "content_id"], name: "index_list_items_on_list_and_content", unique: true
+    t.index ["list_id", "position"], name: "index_list_items_on_list_id_and_position", unique: true
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "movies", force: :cascade do |t|
@@ -53,5 +71,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_21_194127) do
   end
 
   add_foreign_key "episodes", "seasons"
+  add_foreign_key "list_items", "lists"
   add_foreign_key "seasons", "tv_shows"
 end
