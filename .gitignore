@@ -1,0 +1,44 @@
+# See https://help.github.com/articles/ignoring-files for more about ignoring files.
+
+# Ignore bundler config.
+/.bundle
+
+# Ignore all environment files.
+/.env*
+
+# Ignore all default log files.
+/log/*
+!/log/.keep
+
+# Ignore all tempfiles.
+/tmp/*
+!/tmp/.keep
+!/tmp/pids/
+/tmp/pids/*
+!/tmp/pids/.keep
+
+# Ignore storage (uploaded files in development and test).
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
+
+/public/assets
+
+# Ignore master key for decrypting credentials and other encrypted files.
+/config/master.key
+
+/coverage
+
+.DS_Store
+
+# Vendored gems (bundle install --path vendor/bundle).
+/vendor/bundle
+
+# Editors
+/.vscode
+/.idea
+
+# Ignore agent instructions file
+CLAUDE.md
