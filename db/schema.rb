@@ -10,11 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_21_191702) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_21_193032) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "movies", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "original_title", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.integer "year", null: false
+  end
+
+  create_table "tv_shows", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "original_title", null: false
     t.string "title", null: false
