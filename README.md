@@ -19,6 +19,8 @@ docker compose up
 This builds the app image, starts Postgres, creates and migrates the database, and boots
 the server. The API is available at `http://localhost:3001`.
 
+Run `docker compose exec web bin/rails db:seed` if you want the sample data.
+
 Ports are shifted by one (`3001` instead of `3000` and `5433` instead of `5432`) to avoid
 crashing with anything already running locally on the default ports.
 
@@ -37,10 +39,12 @@ Ruby 3.4.10 and a local PostgreSQL instance needed.
 ```
 bundle install
 bin/rails db:create db:migrate
+bin/rails db:seed
 bin/rails server
 ```
 
-The API is available at `http://localhost:3000`.
+The API is available at `http://localhost:3000`. `db:seed` is optional, it just loads a
+couple movies, a TV shows with seasons and episodes, and two lists so there's something to test in the db.
 
 ## Tests
 
