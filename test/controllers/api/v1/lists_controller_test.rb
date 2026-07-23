@@ -89,6 +89,29 @@ class Api::V1::ListsControllerTest < ActionDispatch::IntegrationTest
     assert response.parsed_body["error"].present?
   end
 
+  test "serializes season and episode content with their type-specific attributes" do
+    list = create(:list)
+    season = create(:season, number: 3)
+    episode = create(:episode, number: 5)
+    create(:list_item, list: list, position: 1, content: season)
+    create(:list_item, list: list, position: 2, content: episode)
+
+    get api_v1_list_path(list)
+
+    assert_response :success
+    items = response.parsed_body["items"]
+
+    season_content = items.find { |item| item["type"] == "Season" }["content"]
+    assert_equal 3, season_content["number"]
+    assert_equal season.tv_show_id, season_content["tv_show_id"]
+    assert_not season_content.key?("created_at")
+
+    episode_content = items.find { |item| item["type"] == "Episode" }["content"]
+    assert_equal 5, episode_content["number"]
+    assert_equal episode.season_id, episode_content["season_id"]
+    assert_not episode_content.key?("created_at")
+  end
+
   test "returns 422 for an invalid content_type" do
     list = create(:list)
 
