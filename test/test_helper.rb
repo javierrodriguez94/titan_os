@@ -1,6 +1,8 @@
 require "simplecov"
 SimpleCov.start "rails" do
   enable_coverage :branch
+  group "Services", "app/services"
+  group "Presenters", "app/presenters"
 end
 
 ENV["RAILS_ENV"] ||= "test"
