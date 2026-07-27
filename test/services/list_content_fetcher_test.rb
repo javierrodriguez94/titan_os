@@ -73,4 +73,12 @@ class ListContentFetcherTest < ActiveSupport::TestCase
 
     assert_equal ListContentFetcher::MAX_PER_PAGE, result.per_page
   end
+
+  test "does not cap per_page when it is exactly the configured maximum" do
+    list = create(:list)
+
+    result = ListContentFetcher.call(list_id: list.id, per_page: ListContentFetcher::MAX_PER_PAGE)
+
+    assert_equal ListContentFetcher::MAX_PER_PAGE, result.per_page
+  end
 end

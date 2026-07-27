@@ -89,6 +89,37 @@ class Api::V1::ListsControllerTest < ActionDispatch::IntegrationTest
     assert response.parsed_body["error"].present?
   end
 
+  test "returns 404 for a list id with an invalid format" do
+    get "/api/v1/lists/not-a-valid-id"
+
+    assert_response :not_found
+    assert response.parsed_body["error"].present?
+  end
+
+  test "defaults page and per_page when they are malformed query params" do
+    list = create(:list)
+    create(:list_item, list: list, position: 1, content: create(:movie))
+
+    get api_v1_list_path(list), params: { page: "not-a-number", per_page: "also-not-a-number" }
+
+    assert_response :success
+    pagination = response.parsed_body["pagination"]
+
+    assert_equal 1, pagination["page"]
+    assert_equal 20, pagination["per_page"]
+  end
+
+  test "treats an empty content_type param as no filter" do
+    list = create(:list)
+    create(:list_item, list: list, position: 1, content: create(:movie))
+    create(:list_item, list: list, position: 2, content: create(:tv_show))
+
+    get api_v1_list_path(list), params: { content_type: "" }
+
+    assert_response :success
+    assert_equal [ "Movie", "TvShow" ], response.parsed_body["items"].map { |item| item["type"] }
+  end
+
   test "serializes season and episode content with their type-specific attributes" do
     list = create(:list)
     season = create(:season, number: 3)
