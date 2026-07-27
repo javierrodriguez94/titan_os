@@ -2,6 +2,8 @@ module Content
   extend ActiveSupport::Concern
 
   included do
+    has_many :list_items, as: :content, dependent: :destroy
+
     before_validation :normalize_title_attributes
 
     validates :title, presence: true

@@ -39,5 +39,14 @@ module ContentTestCases
       assert_equal "Padded", record.title
       assert_equal "Padded", record.original_title
     end
+
+    test "destroying the record destroys the list_items referencing it" do
+      record = create(self.class.content_factory)
+      list_item = create(:list_item, content: record)
+
+      record.destroy
+
+      assert_raises(ActiveRecord::RecordNotFound) { list_item.reload }
+    end
   end
 end
